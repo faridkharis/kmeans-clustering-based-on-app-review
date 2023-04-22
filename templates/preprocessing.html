@@ -1,0 +1,23 @@
+{% extends "main-layout.html" %}
+{% block content %}
+
+<div class="scraping__container card">
+    <div class="scraping__data">
+        <h3 class="scraping__subtitle">Preprocessing</h3>
+        <p class="scraping__description">
+            silakan upload file hasil scraping melalui form dibawah ini
+        </p>
+        <form action="" method="POST" role="form" enctype="multipart/form-data" class="upload__form">
+            <input type="file" id="upload-button" name="csv-file" hidden>
+            <span class="button secondary__button upload__button" id="custom-upload-button">Pilih file dari
+                komputer (.csv)</span>
+            <button type="submit" class="button primary__button">Upload</button>
+        </form>
+        <p class="scraping__description">Belum memiliki data ulasan? <a href="{{ url_for('scraping') }}">Klik
+                disini</a></p>
+    </div>
+
+</div>
+
+
+{% endblock %}

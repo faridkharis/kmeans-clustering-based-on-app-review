@@ -1,0 +1,29 @@
+{% extends "main-layout.html" %}
+{% block content %}
+
+<div class="scraping__container card">
+    <div class="scraping__data">
+        <h3 class="scraping__subtitle">Scraping Data</h3>
+        <p class="scraping__description"> Masukkan ID Aplikasi dari Google Play Store dan jumlah ulasan yang
+            dibutuhkan</p>
+        <form action="" method="post" class="input__form">
+            <div class="input__container">
+                <input type="text" name="app-id" id="app-id" class="input__text" autocomplete="off" placeholder=" ">
+                <label for="app-id" class="input__label">ID Aplikasi</label>
+            </div>
+            <div class="input__container">
+                <input type="number" name="review-count" id="review-count" class="input__text" autocomplete="off"
+                    placeholder=" ">
+                <label for="review-count" class="input__label">Jumlah Ulasan</label>
+            </div>
+            <button type="submit" class="button primary__button scraping__button">Mulai</button>
+        </form>
+
+        <p class="scraping__description">Sudah memiliki data ulasan? <a href="{{ url_for('preprocessing') }}">Klik
+                disini</a></p>
+    </div>
+</div>
+
+
+
+{% endblock %}

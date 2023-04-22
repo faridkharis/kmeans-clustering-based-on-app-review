@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!--========== ICONS ==========-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--========== DATATABLES ==========-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css" />
+
+
+    <title>Skripsi</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav>
+            <div class="nav__logo">
+                <i class='bx bx-edit nav__logo-icon'></i>
+                <div>
+                    <p class="nav__logo-title">SKRIPSI</p>
+                    <p class="nav__logo-subtitle">123160109</p>
+                </div>
+            </div>
+
+            <div class="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <i class='bx bxs-home nav__link-icon'></i>
+                        <a href="{{ url_for('index') }}" class="nav__link">Beranda</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-cloud-download nav__link-icon'></i>
+                        <a href="{{ url_for('scraping') }}" class="nav__link">Scraping</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-message-square-dots nav__link-icon'></i>
+                        <a href="{{ url_for('preprocessing') }}" class="nav__link">Preprocessing</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-bar-chart-alt-2 nav__link-icon'></i>
+                        <a href="{{ url_for('clustering') }}" class="nav__link">Clustering</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="main__title">
+                <h1 class="main__title-text">
+                    Implementasi Latent Dirichlet Allocation untuk User Experience Research Startup
+                </h1>
+            </div>
+            <div class="review__container">
+                <div class="review__data card">
+                    <h3 class="review__subtitle">Data Ulasan</h3>
+                    <p class="review__description">Berikut merupakan data ulasan hasil dari proses scraping dari website
+                        Google Playstore, sesuai dengan ID aplikasi yang diinputkan sebelumnya</p>
+
+                    {% for table in tables %}
+                    {{ table|safe }}
+                    {% endfor %}
+
+                    <div class="download__button">
+                        <a href="{{ url_for('download_data') }}" class="button primary__button">
+                            <div class="icon__button">
+                                <i class='bx bx-download button-icon'></i>
+                                Download
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card review__action">
+                <a href="{{ url_for('scraping') }}" class="button primary__button">Kembali</a>
+                <a href="{{ url_for('preprocessing') }}" class="button primary__button">Lanjut</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!--========== DATATABLES ==========-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.empTable').DataTable();
+        });
+    </script>
+
+</body>
+
+</html>

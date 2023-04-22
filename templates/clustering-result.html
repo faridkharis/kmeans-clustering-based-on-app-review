@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!--========== ICONS ==========-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--========== DATATABLES ==========-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css" />
+
+    <!--========== CHART JS ==========-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.1/chart.min.js"
+        integrity="sha512-MC1YbhseV2uYKljGJb7icPOjzF2k6mihfApPyPhEAo3NsLUW0bpgtL4xYWK1B+1OuSrUkfOTfhxrRKCz/Jp3rQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <title>Skripsi</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav>
+            <div class="nav__logo">
+                <i class='bx bx-edit nav__logo-icon'></i>
+                <div>
+                    <p class="nav__logo-title">SKRIPSI</p>
+                    <p class="nav__logo-subtitle">123160109</p>
+                </div>
+            </div>
+
+            <div class="nav__menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <i class='bx bxs-home nav__link-icon'></i>
+                        <a href="{{ url_for('index') }}" class="nav__link">Beranda</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-cloud-download nav__link-icon'></i>
+                        <a href="{{ url_for('scraping') }}" class="nav__link">Scraping</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-message-square-dots nav__link-icon'></i>
+                        <a href="{{ url_for('preprocessing') }}" class="nav__link">Preprocessing</a>
+                    </li>
+                    <li class="nav__item">
+                        <i class='bx bxs-bar-chart-alt-2 nav__link-icon'></i>
+                        <a href="{{ url_for('clustering') }}" class="nav__link">Clustering</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="main__title">
+                <h1 class="main__title-text">
+                    Implementasi K-Means Clustering dan TF-IDF untuk User Experience Research Startup
+                </h1>
+            </div>
+            <div class="review__container">
+
+                <div class="review__container">
+                    <div class="review__data card">
+                        <h3 class="lda__subtitle">Persebaran Ulasan</h3>
+                        <p class="lda__description">
+                            Berikut merupakan persebaran ulasan berdasarkan klaster
+                        </p>
+
+                        <div class="chartCard topic__chart-container">
+                            <div class="chartBox">
+                                <canvas id="scatterChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review__data card">
+                        <h3 class="lda__subtitle">Persebaran Topik</h3>
+                        <p class="lda__description">
+                            Berikut merupakan topik-topik yang sering diulas oleh para pengguna dan persebarannya
+                            berdasarkan sentimen
+                        </p>
+                        <div class="topics__container">
+                            <p class="topic__label">{{ topics[0]+' '+topics[1] }}</p>
+                            <p class="topic__label">{{ topics[2]+' '+topics[3] }}</p>
+                            <p class="topic__label">{{ topics[4]+' '+topics[5] }}</p>
+                            <p class="topic__label">{{ topics[6]+' '+topics[7] }}</p>
+                        </div>
+
+                        <div class="chartCard topic__chart-container">
+                            <div class="chartBox">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review__data card">
+                        <h3 class="lda__subtitle">Rekomendasi untuk peningkatan aplikasi</h3>
+                        <p>Sebanyak <b>{{ most_topic_perc }}</b> % pengguna mengeluhkan fitur <b>{{
+                                topics[most_topic_index*2]+'
+                                '+topics[most_topic_index*2+1] }}</b> </p>
+                        <p>Direkomendasikan untuk memperbaiki fitur <b>{{ topics[most_topic_index*2]+'
+                                '+topics[most_topic_index*2+1] }}</b> untuk mengatasi permasalahan pengguna</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card review__action">
+                <a href="{{ url_for('index') }}" class="button primary__button">Kembali</a>
+                <a href="#" class="button primary__button">Lanjut</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script>
+        // setup 
+        const topics_json = '{{ topics | tojson }}';
+        const topics = JSON.parse(topics_json)
+        const negative_arr = '{{ negative_arr }}';
+        const neutral_arr = '{{ neutral_arr }}';
+        const positive_arr = '{{ positive_arr }}';
+        const dataBar = {
+            labels: [topics[0] + ' ' + topics[1], topics[2] + ' ' + topics[3], topics[4] + ' ' + topics[5], topics[6] + ' ' + topics[7]],
+            datasets: [{
+                label: 'Topik',
+                data: JSON.parse(negative_arr),
+                backgroundColor: [
+                    'rgba(248, 76, 97, 1)',
+                ],
+                borderColor: [
+                    'rgba(255, 26, 104, 1)',
+                ],
+                borderWidth: 1,
+            },
+            ]
+        };
+        // config 
+        const configBar = {
+            type: 'bar',
+            data: dataBar,
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 16,
+                                weight: 600
+                            },
+                        }
+                    },
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        // render init block
+        const barChart = new Chart(
+            document.getElementById('barChart'),
+            configBar
+        );
+    </script>
+    <script>
+        //setup
+        const dataScatter = {
+            datasets: [{
+                label: 'Persebaran Ulasan',
+                data: [{
+                    x: -10,
+                    y: 0
+                }, {
+                    x: 0,
+                    y: 10
+                }, {
+                    x: 10,
+                    y: 5
+                }, {
+                    x: 0.5,
+                    y: 5.5
+                }],
+                backgroundColor: 'rgb(255, 99, 132)'
+            }],
+        };
+
+        // config
+        const configScatter = {
+            type: 'scatter',
+            data: dataScatter,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        };
+
+        // render init block
+        const scatterChart = new Chart(
+            document.getElementById('scatterChart'),
+            configScatter
+        );
+    </script>
+
+</body>
+
+</html>

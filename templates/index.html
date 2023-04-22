@@ -1,0 +1,35 @@
+{% extends "main-layout.html" %}
+{% block content %}
+
+<div class="home__container">
+    <div class="home__data">
+        <div class="card home__card">
+            <h1 class="home__number">01</h1>
+            <h3 class="home__subtitle">Scraping Data</h3>
+            <p class="home__description">Scarping merupakan proses untuk mendapatkan data dari Google Play Store</p>
+            <a href="{{ url_for('scraping') }}" class="button primary__button start__button">Mulai</a>
+        </div>
+
+        <div class="card home__card">
+            <h1 class="home__number">02</h1>
+            <h3 class="home__subtitle">Text Preprocessing</h3>
+            <p class="home__description">Text preprocessing merupakan penyiapan data teks untuk diolah di proses
+                berikutnya
+            </p>
+            <a href="{{ url_for('preprocessing') }}" class="button primary__button start__button">Mulai</a>
+        </div>
+
+        <div class="card home__card">
+            <h1 class="home__number">03</h1>
+            <h3 class="home__subtitle">Clustering</h3>
+            <p class="home__description">Clustering merupakan proses untuk mengelompokkan ulasan berdasarkan topik
+                tertentu
+            </p>
+            <a href="{{ url_for('clustering') }}" class="button primary__button start__button">Mulai</a>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
